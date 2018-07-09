@@ -46,10 +46,10 @@ rvm use 2.5.1 --default
 # ruby -v
 
 # install bundler
-gem install bundler
+gem install bundler -V --no-ri --no-rdoc
 
 # 5. Install Rails
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 sudo apt-get install -y nodejs
 
-gem install rails -v 5.2.0
+gem install rails -v 5.2.0 --no-ri --no-rdoc
