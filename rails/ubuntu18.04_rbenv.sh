@@ -30,6 +30,9 @@ ruby -v
 echo "gem: --no-document" > ~/.gemrc
 gem install bundler
 rbenv rehash
+# Note: rbenv doctor script
+#curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
+
 
 # 2. Install Rails
 # 2.1 install NodeJS
