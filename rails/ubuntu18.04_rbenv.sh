@@ -14,7 +14,7 @@ cd
 git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-exec $SHELL
+source .bashrc
 
 # 1.3 Install ruby-build as a rbenv plugin
 mkdir -p "$(rbenv root)"/plugins
