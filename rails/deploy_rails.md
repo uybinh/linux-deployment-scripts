@@ -39,6 +39,19 @@ Change ownership of "~/.rbenv/" to deploy user
 ```
 sudo chown deploy:deploy ~/.rbenv/
 ```
+## Set up database
+
+```
+sudo -u postgres
+createuser <username>
+createdb <dbname>
+psql
+```
+
+```
+psql=# alter user <username> with encrypted password '<password>';
+```
+
 
 ## 3. Setup rails app
 ### 3.1. Adding Deployment Configurations in the Rails App
@@ -101,10 +114,12 @@ This Capfile loads some pre-defined tasks in to your Capistrano configuration fi
 Replace the contents of config/deploy.rb with the following, updating fields marked in red with your app and Droplet parameters:
 
 > replace 'your_server_ip', 'appname', 'deploy', github address with yours
-> 
+>
 > you can remove 'port: your_port_num'
 
 ```
+#config/deploy.rb
+
 # Change these
 server 'your_server_ip', port: your_port_num, roles: [:web, :app, :db], primary: true
 
@@ -200,7 +215,7 @@ end
 
 # ps aux | grep puma    # Get puma pid
 # kill -s SIGUSR2 pid   # Restart puma
-# kill -s SIGTERM pid   # Stop puma 
+# kill -s SIGTERM pid   # Stop puma
 ```
 Create config/nginx.conf in your Rails project directory
 
@@ -260,3 +275,24 @@ sudo service nginx restart
 ```
 sudo service nginx restart
 ```
+
+## Fix error with Rails 5.2.0
+[Deploying Rails 5.2 Applications with New Encrypted Credentials using Capistrano](http://waiyanyoon.com/deploying-rails-5-2-applications-with-encrypted-credentials-using-capistrano/)
+
+> Copy config/master.key to your server manually without commiting to git
+
+1. Copy config/master.key in your local to the production server under <project_root>/shared/config/master.key. If you don't have the key, please get it from your colleagues or whoever that initialized the Rails app.
+2. Configure your capistrano's config/deploy.rb to include this line:
+
+```
+set :linked_files, %w{config/master.key}
+```
+
+3. Deploy your app again and verify that deployment is successful.
+4. Commit this changes to your repo. Don't check-in your config/master.key!
+
+## Notes
+
+* Remember to create an SSH key on local machine for circle ci
+  * add the private key to circle ci
+  * add the public key to authorized keys on server
